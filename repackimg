@@ -1,0 +1,12 @@
+#!/bin/bash
+
+source bin/funcs.sh
+chkarch
+banner
+
+IMG=`cat split/img_name`
+
+cd split
+$MAGISKBOOT repack $IMG
+mv new-boot.img ..
+

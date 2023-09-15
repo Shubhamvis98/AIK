@@ -1,0 +1,22 @@
+#!/bin/bash
+
+source bin/funcs.sh
+chkarch
+banner
+./cleanup
+
+if [ -f "$1" ]
+then
+    IMG=`realpath $1`
+else
+    echo '[?] Input Error'
+    exit 1
+fi
+
+mkdir -p split
+echo $IMG > split/img_name
+cd split
+
+$MAGISKBOOT unpack -h $IMG
+
+echo -e "\n[!][!][!]WARNING[!][!][!]\nDo not delete or move \"$IMG\" if you want to repack.\nMagiskboot needs source boot image to repack."

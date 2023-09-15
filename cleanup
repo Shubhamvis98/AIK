@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [[ -e 'split' || -e '.img' ]]
+then
+    rm -vrf split .img
+else
+    echo '[!]Nothing to clean'
+fi
+
