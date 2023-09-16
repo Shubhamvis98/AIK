@@ -4,7 +4,7 @@ source bin/funcs.sh
 chkarch
 banner
 RPWD=`pwd`
-IMG=`cat $RPWD/split/img_name 2> /dev/null`
+IMG="$RPWD/split/source.img"
 
 if [[ -d $RPWD/ramdisk ]]
 then
