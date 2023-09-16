@@ -15,6 +15,7 @@ fi
 if [[ -f "$IMG" ]]
 then
     cd $RPWD/split
+    sleep 1
     $MAGISKBOOT repack $IMG
     mv new-boot.img ..
 else
