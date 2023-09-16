@@ -25,3 +25,12 @@ chkarch()
         exit
     fi
 }
+
+usage()
+{
+echo -e "Usage:"
+echo -e "\t./unpack <android_boot.img>\t#unpack boot.img"
+echo -e "\t./repack\t\t\t#repack new-boot.img"
+echo -e "\t./cleanup\t\t\t#clean workspace\n"
+}
+

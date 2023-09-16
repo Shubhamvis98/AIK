@@ -2,7 +2,8 @@
 
 if [[ -e 'split' || -e '.img' || -e 'ramdisk' ]]
 then
-    rm -vrf split .img ramdisk
+    rm -rf split .img ramdisk
+    echo '[+]Workspace cleaned'
 else
     echo '[!]Nothing to clean'
 fi

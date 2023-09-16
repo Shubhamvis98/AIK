@@ -3,14 +3,19 @@
 source bin/funcs.sh
 chkarch
 banner
-./cleanup
 RPWD=`pwd`
 
-if [ -f "$1" ]
+if [ "$1" == "help" ]
 then
+    usage
+    exit 0
+elif [ -f "$1" ]
+then
+    ./cleanup
     IMG=`realpath $1`
 else
-    echo '[?] Input Error'
+    echo -e '[!]Input Error\n'
+    usage
     exit 1
 fi
 
@@ -22,3 +27,4 @@ cd $RPWD/ramdisk
 cpio -i < $RPWD/split/ramdisk.cpio
 
 echo -e "\n[!][!][!]WARNING[!][!][!]\nDo not delete or move \"$IMG\" if you want to repack.\nMagiskboot needs source boot image to repack."
+

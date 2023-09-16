@@ -4,15 +4,21 @@ source bin/funcs.sh
 chkarch
 banner
 RPWD=`pwd`
-IMG=`cat $RPWD/split/img_name`
+IMG=`cat $RPWD/split/img_name 2> /dev/null`
 
 if [[ -d $RPWD/ramdisk ]]
 then
-	cd $RPWD/ramdisk
-	find . | cpio -H newc -o > $RPWD/split/ramdisk.cpio
+    cd $RPWD/ramdisk
+    find . | cpio -H newc -o > $RPWD/split/ramdisk.cpio
 fi
 
-cd $RPWD/split
-$MAGISKBOOT repack $IMG
-mv new-boot.img ..
+if [[ -f "$IMG" ]]
+then
+    cd $RPWD/split
+    $MAGISKBOOT repack $IMG
+    mv new-boot.img ..
+else
+    usage
+    exit 1
+fi
 
