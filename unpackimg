@@ -20,11 +20,9 @@ else
 fi
 
 mkdir -p $RPWD/split $RPWD/ramdisk
-echo $IMG > $RPWD/split/img_name
+cat $IMG > $RPWD/split/source.img
 cd $RPWD/split
 $MAGISKBOOT unpack -h $IMG
 cd $RPWD/ramdisk
 cpio -i < $RPWD/split/ramdisk.cpio
-
-echo -e "\n[!][!][!]WARNING[!][!][!]\nDo not delete or move \"$IMG\" if you want to repack.\nMagiskboot needs source boot image to repack."
 
