@@ -16,7 +16,7 @@ chkarch()
 {
     arch=`uname -m`
 
-    if [[ "$arch" == "arm"* ]]; then
+    if [[ "$arch" == "arm"* || "$arch" == "aarch"* ]]; then
         MAGISKBOOT=`pwd/`'bin/magiskboot_arm'
     elif [[ "$arch" == "x86_64" ]]; then
         MAGISKBOOT=`pwd`/'bin/magiskboot_x86'
