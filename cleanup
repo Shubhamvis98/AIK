@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if [[ -e 'split' || -e '.img' ]]
+if [[ -e 'split' || -e '.img' || -e 'ramdisk' ]]
 then
-    rm -vrf split .img
+    rm -vrf split .img ramdisk
 else
     echo '[!]Nothing to clean'
 fi
