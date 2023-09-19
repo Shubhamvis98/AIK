@@ -28,9 +28,26 @@ chkarch()
 
 usage()
 {
-echo -e "Usage:"
-echo -e "\t./unpack <android_boot.img>\t#unpack boot.img"
-echo -e "\t./repack\t\t\t#repack new-boot.img"
-echo -e "\t./cleanup\t\t\t#clean workspace\n"
+    echo -e "Usage:"
+    echo -e "\t./unpack <android_boot.img>\t#unpack boot.img"
+    echo -e "\t./repack\t\t\t#repack new-boot.img"
+    echo -e "\t./cleanup\t\t\t#clean workspace\n"
+}
+
+chkrdtype() {
+    file="$1"
+    file_type=$(file -b "$file" | tr '[:upper:]' '[:lower:]')
+
+    if [[ $file_type == *"gzip"* ]]; then
+        echo 'gzip'
+    elif [[ $file_type == *"xz"* ]]; then
+        echo 'xz'
+    elif [[ $file_type == *"zst"* ]]; then
+        echo 'zst'
+    elif [[ $file_type == *"cpio"* ]]; then
+        echo 'cpio'
+    else
+        echo 'Unknown'
+    fi
 }
 

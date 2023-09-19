@@ -23,6 +23,20 @@ mkdir -p $RPWD/split $RPWD/ramdisk
 cat $IMG > $RPWD/split/source.img
 cd $RPWD/split
 $MAGISKBOOT unpack -h $IMG
+
+RDTYPE=`chkrdtype $RPWD/split/ramdisk.cpio | tee $RPWD/split/ramdisk_compression`
+if [[ "$RDTYPE" == 'zst' ]]; then
+    mv $RPWD/split/ramdisk.cpio $RPWD/split/ramdisk.cpio.zst
+    zstd -d $RPWD/split/ramdisk.cpio.zst
+    rm $RPWD/split/ramdisk.cpio.zst
+elif [[ "$RDTYPE" == 'gzip' ]]; then
+    mv $RPWD/split/ramdisk.cpio $RPWD/split/ramdisk.cpio.gz
+    gzip -d $RPWD/split/ramdisk.cpio.gz
+elif [[ "$RDTYPE" == 'xz' ]]; then
+    mv $RPWD/split/ramdisk.cpio $RPWD/split/ramdisk.cpio.xz
+    xz -d $RPWD/split/ramdisk.cpio.xz
+fi
+
 cd $RPWD/ramdisk
 cpio -i < $RPWD/split/ramdisk.cpio
 
