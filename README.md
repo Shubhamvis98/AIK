@@ -11,7 +11,7 @@ twitter/git: shubhamvis98
 web: https://fossfrog.in
 
 Usage:
-        ./unpackimg <boot.img>          #unpack boot.img
+        ./unpackimg boot.img            #unpack boot.img
         ./repackimg                     #repack new-boot.img
         ./cleanup                       #clean workspace
 
