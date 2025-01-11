@@ -1,7 +1,6 @@
 #!/bin/bash
 
 source bin/funcs.sh
-banner
 if [[ -e 'split' || -e 'ramdisk' ]]
 then
     echo -n '[+]Clean workspace'
