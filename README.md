@@ -1,4 +1,4 @@
-# <u>Android Image Kitchen</u>
+# <u>Magiskboot based Android Image Kitchen</u>
 
 <pre>
    _     _____                                 _     _
