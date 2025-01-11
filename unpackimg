@@ -3,7 +3,8 @@
 source bin/funcs.sh
 chkarch
 banner
-RPWD=`pwd`
+
+RPWD=$(pwd)
 
 if [ "$1" == "help" ]
 then
@@ -11,8 +12,9 @@ then
     exit 0
 elif [ -f "$1" ]
 then
+    chkcmds
     ./cleanup
-    IMG=`realpath $1`
+    IMG=$(realpath $1)
 else
     echo -e '[!]Input Error\n'
     usage
@@ -20,23 +22,27 @@ else
 fi
 
 mkdir -p $RPWD/split $RPWD/ramdisk
-cat $IMG > $RPWD/split/source.img
-cd $RPWD/split
-$MAGISKBOOT unpack -h $IMG
+cat "$IMG" > $RPWD/split/source.img
 
-RDTYPE=`chkrdtype $RPWD/split/ramdisk.cpio | tee $RPWD/split/ramdisk_compression`
+echo -n "[+]Unpacking $(basename ${IMG})"
+echo "mkbootimg --output $RPWD/new-boot.img \\" > $RPWD/split/mkcmd
+unpack_bootimg --boot_img "$IMG" --format mkbootimg --out $RPWD/split >> $RPWD/split/mkcmd
+echo -e "\t\tDone"
+RDTYPE=`chkrdtype $RPWD/split/ramdisk | tee $RPWD/split/ramdisk_compression`
 if [[ "$RDTYPE" == 'zst' ]]; then
-    mv $RPWD/split/ramdisk.cpio $RPWD/split/ramdisk.cpio.zst
-    zstd -d $RPWD/split/ramdisk.cpio.zst
-    rm $RPWD/split/ramdisk.cpio.zst
+    mv $RPWD/split/ramdisk $RPWD/split/ramdisk.zst
+    zstd -qd $RPWD/split/ramdisk.zst
+    rm $RPWD/split/ramdisk.zst
 elif [[ "$RDTYPE" == 'gzip' ]]; then
-    mv $RPWD/split/ramdisk.cpio $RPWD/split/ramdisk.cpio.gz
-    gzip -d $RPWD/split/ramdisk.cpio.gz
+    mv $RPWD/split/ramdisk $RPWD/split/ramdisk.gz
+    gzip -d $RPWD/split/ramdisk.gz
 elif [[ "$RDTYPE" == 'xz' ]]; then
-    mv $RPWD/split/ramdisk.cpio $RPWD/split/ramdisk.cpio.xz
-    xz -d $RPWD/split/ramdisk.cpio.xz
+    mv $RPWD/split/ramdisk $RPWD/split/ramdisk.xz
+    xz -d $RPWD/split/ramdisk.xz
 fi
 
 cd $RPWD/ramdisk
-cpio -i < $RPWD/split/ramdisk.cpio
+echo -n '[+]Extracting ramdisk'
+cpio -i < $RPWD/split/ramdisk 2> /dev/null
+echo -e '\t\tDone'
 

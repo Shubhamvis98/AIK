@@ -1,13 +1,15 @@
 banner()
 {
 cat <<'EOF' 
-   _     _____                                 _     _
-  /_\    \_   \/\ /\     _ __ ___   __ _  __ _(_)___| | __
- //_\\    / /\/ //_/____| '_ ` _ \ / _` |/ _` | / __| |/ /
-/  _  \/\/ /_/ __ \_____| | | | | | (_| | (_| | \__ \   < 
-\_/ \_/\____/\/  \/     |_| |_| |_|\__,_|\__, |_|___/_|\_\
-                                         |___/ by fossfrog
+   _     _____                     _    _                 _   _                 
+  /_\    \_   \/\ /\     _ __ ___ | | _| |__   ___   ___ | |_(_)_ __ ___   __ _ 
+ //_\\    / /\/ //_/____| '_ ` _ \| |/ / '_ \ / _ \ / _ \| __| | '_ ` _ \ / _` |
+/  _  \/\/ /_/ __ \_____| | | | | |   <| |_) | (_) | (_) | |_| | | | | | | (_| |
+\_/ \_/\____/\/  \/     |_| |_| |_|_|\_\_.__/ \___/ \___/ \__|_|_| |_| |_|\__, |
+                                                               by fossfrog|___/ 
 twitter/git: shubhamvis98
+web: https://fossfrog.in
+________________________________________________________________________________
 
 EOF
 }
@@ -29,8 +31,8 @@ chkarch()
 usage()
 {
     echo -e "Usage:"
-    echo -e "\t./unpack <android_boot.img>\t#unpack boot.img"
-    echo -e "\t./repack\t\t\t#repack new-boot.img"
+    echo -e "\t./unpackimg <boot.img>\t\t#unpack boot.img"
+    echo -e "\t./repackimg\t\t\t#repack new-boot.img"
     echo -e "\t./cleanup\t\t\t#clean workspace\n"
 }
 
@@ -51,3 +53,24 @@ chkrdtype() {
     fi
 }
 
+chkcmds() {
+    echo -n "[+]Checking for required commands"
+    local commands=("mkbootimg" "unpack_bootimg" "zstd" "cpio" "gzip")
+    local missing=()
+
+    for cmd in "${commands[@]}"; do
+        if ! command -v "$cmd" &> /dev/null; then
+            missing+=("$cmd")
+        fi
+    done
+
+    if [ ${#missing[@]} -gt 0 ]; then
+        echo -e "\n[!]Error: Please install following required commands:"
+        for cmd in "${missing[@]}"; do
+            echo "  - $cmd"
+        done
+        exit 1
+    fi
+
+    echo -e "\t\tDone"
+}

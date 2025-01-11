@@ -1,33 +1,34 @@
 #!/bin/bash
 
 source bin/funcs.sh
-chkarch
 banner
 RPWD=`pwd`
-IMG="$RPWD/split/source.img"
-RDTYPE=`cat $RPWD/split/ramdisk_compression`
+[ ! -d "$RPWD/split" ] && echo '[!]Unpack an image first' && exit
+
+RDTYPE=`cat "$RPWD/split/ramdisk_compression"`
 [ "$RDTYPE" == 'zst' ] && RDTYPE='zstd'
 
 if [[ -d $RPWD/ramdisk ]]
 then
+    echo -n '[+]Compressing ramdisk'
     cd $RPWD/ramdisk
     TMP=$RPWD/split/ramdiskcpio.tmp
-    RAMDISK=$RPWD/split/ramdisk.cpio
-    find . | cpio -H newc -o > $TMP
+    RAMDISK=$RPWD/split/ramdisk
+    find . | cpio --quiet -H newc -o > $TMP
     if [[ "$RDTYPE" == 'Unknown' || "$RDTYPE" == 'cpio' ]]; then
         mv $TMP $RAMDISK
     else
         $RDTYPE -c $TMP > $RAMDISK
         rm $TMP
     fi
+    echo -e '\t\tDone'
 fi
 
-if [[ -f "$IMG" ]]
+if [[ -f "$RPWD/split/mkcmd" ]]
 then
-    cd $RPWD/split
-    sleep 1
-    $MAGISKBOOT repack $IMG
-    mv new-boot.img ..
+    echo -n '[+]Creating new image'
+    sh $RPWD/split/mkcmd && \
+        echo -e '\t\tDone'
 else
     usage
     exit 1
