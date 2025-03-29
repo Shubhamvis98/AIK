@@ -1,7 +1,6 @@
 #!/bin/bash
 
 source bin/funcs.sh
-chkarch
 banner
 
 RPWD=$(pwd)
