@@ -15,7 +15,7 @@ then
     ./cleanup
     IMG=$(realpath $1)
 else
-    echo -e '[!]Input Error\n'
+    printf '[!]Input Error\n\n'
     usage
     exit 1
 fi
@@ -23,10 +23,10 @@ fi
 mkdir -p $RPWD/split $RPWD/ramdisk
 cat "$IMG" > $RPWD/split/source.img
 
-echo -n "[+]Unpacking $(basename ${IMG})"
-echo "mkbootimg --output $RPWD/new-boot.img \\" > $RPWD/split/mkcmd
+printf '%-40s' "[+]Unpacking $(basename ${IMG})"
+printf "mkbootimg --output $RPWD/new-boot.img \\" > $RPWD/split/mkcmd
 unpack_bootimg --boot_img "$IMG" --format mkbootimg --out $RPWD/split >> $RPWD/split/mkcmd
-echo -e "\t\tDone"
+printf 'Done\n'
 RDTYPE=`chkrdtype $RPWD/split/ramdisk | tee $RPWD/split/ramdisk_compression`
 if [[ "$RDTYPE" == 'zst' ]]; then
     mv $RPWD/split/ramdisk $RPWD/split/ramdisk.zst
@@ -41,7 +41,7 @@ elif [[ "$RDTYPE" == 'xz' ]]; then
 fi
 
 cd $RPWD/ramdisk
-echo -n '[+]Extracting ramdisk'
+printf '%-40s' '[+]Extracting ramdisk'
 cpio -i < $RPWD/split/ramdisk 2> /dev/null
-echo -e '\t\tDone'
+printf 'Done\n'
 

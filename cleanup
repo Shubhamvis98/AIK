@@ -3,10 +3,10 @@
 source bin/funcs.sh
 if [[ -e 'split' || -e 'ramdisk' ]]
 then
-    echo -n '[+]Clean workspace'
+    printf '%-40s' '[+]Clean workspace'
     rm -rf split ramdisk
-    echo -e '\t\tDone'
+    printf 'Done\n'
 else
-    echo '[!]Nothing to clean'
+    printf '[!]Nothing to clean\n'
 fi
 

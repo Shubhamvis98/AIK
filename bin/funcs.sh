@@ -40,7 +40,7 @@ chkrdtype() {
 }
 
 chkcmds() {
-    echo -n "[+]Checking for required commands"
+    printf "%-40s" '[+]Checking for required commands'
     local commands=("mkbootimg" "unpack_bootimg" "zstd" "cpio" "gzip")
     local missing=()
 
@@ -58,5 +58,5 @@ chkcmds() {
         exit 1
     fi
 
-    echo -e "\t\tDone"
+    echo "Done"
 }

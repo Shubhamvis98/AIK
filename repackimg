@@ -3,14 +3,14 @@
 source bin/funcs.sh
 banner
 RPWD=`pwd`
-[ ! -d "$RPWD/split" ] && echo '[!]Unpack an image first' && exit
+[ ! -d "$RPWD/split" ] && printf '[!]Unpack an image first\n' && exit
 
 RDTYPE=`cat "$RPWD/split/ramdisk_compression"`
 [ "$RDTYPE" == 'zst' ] && RDTYPE='zstd'
 
 if [[ -d $RPWD/ramdisk ]]
 then
-    echo -n '[+]Compressing ramdisk'
+    printf '%-40s' '[+]Compressing ramdisk'
     cd $RPWD/ramdisk
     TMP=$RPWD/split/ramdiskcpio.tmp
     RAMDISK=$RPWD/split/ramdisk
@@ -21,14 +21,14 @@ then
         $RDTYPE -c $TMP > $RAMDISK
         rm $TMP
     fi
-    echo -e '\t\tDone'
+    printf 'Done\n'
 fi
 
 if [[ -f "$RPWD/split/mkcmd" ]]
 then
-    echo -n '[+]Creating new image'
+    printf '%-40s' '[+]Creating new image'
     sh $RPWD/split/mkcmd && \
-        echo -e '\t\tDone'
+        printf 'Done\n'
 else
     usage
     exit 1
