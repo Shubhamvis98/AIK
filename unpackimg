@@ -24,7 +24,7 @@ mkdir -p $RPWD/split $RPWD/ramdisk
 cat "$IMG" > $RPWD/split/source.img
 
 printf '%-40s' "[+]Unpacking $(basename ${IMG})"
-printf "mkbootimg --output $RPWD/new-boot.img \\" > $RPWD/split/mkcmd
+printf "mkbootimg --output $RPWD/new-boot.img " > $RPWD/split/mkcmd
 unpack_bootimg --boot_img "$IMG" --format mkbootimg --out $RPWD/split >> $RPWD/split/mkcmd
 printf 'Done\n'
 RDTYPE=`chkrdtype $RPWD/split/ramdisk | tee $RPWD/split/ramdisk_compression`
